@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-
+ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 export default function AttendanceList({ employeeId, mode }) {
   const [records, setRecords] = useState([]);
   const [pendingChanges, setPendingChanges] = useState({});
@@ -17,9 +17,7 @@ export default function AttendanceList({ employeeId, mode }) {
     if (!employeeId) return;
 
     try {
-      const res = await axios.get(
-        `http://localhost:8000/api/attendance/${employeeId}`,
-      );
+      const res = await axios.get(`${BASE_URL}/attendance/${employeeId}`);
       setRecords(res.data);
       setPendingChanges({});
     } catch (error) {
@@ -72,11 +70,12 @@ export default function AttendanceList({ employeeId, mode }) {
         updates: changesArray,
       });
 
-      await axios.post("http://localhost:8000/api/attendance/bulk", {
+     
+
+      await axios.post(`${BASE_URL}/attendance/bulk`, {
         employeeId,
         updates: changesArray,
       });
-
       alert("Attendance saved successfully");
 
       setPendingChanges({});
